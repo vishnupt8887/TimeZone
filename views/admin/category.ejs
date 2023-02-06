@@ -1,0 +1,62 @@
+<%- include('../admin/partials/adminheader') %> 
+<div class="content">
+<div class="row d-flex justify-content-center">
+<!-- <div class="col-xl-2">
+
+</div> -->
+<div class="col-xl-10">
+  <% if(err){ %>
+    <p class="text-danger"><%= err %> </p>
+     <%} %> 
+    <a href="/admin/addCategory"><button type="submit" class="btn btn-primary">Add Category</button></a>
+    <table class="table table-striped table-hover">
+    <thead>
+      <tr>
+        <th scope="col">#</th>
+        <th scope="col">Category Name</th>
+        <th scope="col">Image</th>
+        <th scope="col">Discription</th>
+        <th scope="col">Edit</th>
+      </tr>
+    </thead>
+    <tbody>
+      <% for(let i=0;i<categoryLt.length;i++) {%> 
+      <tr>
+        <th scope="row"><%= i+1 %> 
+        </th>
+        <td><%= categoryLt[i].categoryName %> </td>
+        <td><img src="<%= categoryLt[i].image %>" height="100px" width="100px" alt=""></td>
+        <td><%= categoryLt[i].discription %></td>
+        <td><% if(categoryLt[i].access) {%>
+          <form action="/admin/categoryDisable/<%= categoryLt[i]._id %>" method="get" id="<%= categoryLt[i]._id %>">
+            <button onclick="askConfirm('<%= categoryLt[i]._id %>')" class="btn btn-danger" type="button">Disable</button>
+          </form>
+        <% } else{%>
+          <form action="/admin/categoryEnable/<%= categoryLt[i]._id %>" method="get" id="<%= categoryLt[i]._id %>">
+          <button type="button" onclick="askConfirm('<%= categoryLt[i]._id %>')" class="btn btn-success">Enable</button>
+          <%}%> 
+        </form>
+        </td>
+      </tr>
+      <% } %> 
+    </tbody>
+  </table>
+</div>
+</div>
+</div>
+  
+<script src="//cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+<script>
+  function askConfirm(id){
+    Swal.fire({
+      title: 'Do you want to save the changes?',
+      showCancelButton: true,
+      confirmButtonText: 'Update',
+    }).then((result) => {
+      /* Read more about isConfirmed, isDenied below */
+      if (result.isConfirmed) {
+        document.getElementById(id).submit()
+      }
+    })
+  }
+</script>

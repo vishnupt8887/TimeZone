@@ -1,0 +1,31 @@
+<%- include('../admin/partials/adminheader') %>
+
+<div class="content">
+  <div class="row">
+    <!-- <div class="col-xl-2">
+
+    </div> -->
+    <div class="col-sm-12 ms-4 mt-4 col-xl-6 pl-2 pe-2">
+      <div class="card">
+        <div class="card-body">
+    <form method="post" action="/admin/addCategoryPost" enctype="multipart/form-data"  class=" ">
+      <div class="pl-2 pe-2">
+        <div class="mb-3 pt-4 ">
+          <label for="exampleFormControlInput1" class="form-label"  >Category Name</label>
+          <input type="name" name="categoryName" class="form-control" id="exampleFormControlInput1" placeholder="Add category">
+        </div>
+        <div class="mb-3">
+          <label for="formFileMultiple" class="form-label">Multiple image</label>
+          <input class="form-control" type="file" name="image" id="image" accept="image/jpeg,image/gif,image/png,image/x-eps" multiple>
+        </div>
+        <div class="mb-3">
+          <label for="exampleFormControlTextarea1" class="form-label" >Discription</label>
+          <!-- <textarea  class="form-control" id="exampleFormControlTextarea1" rows="3" ></textarea> -->
+          <input type="name" name="discription" class="form-control" id="exampleFormControlInput1" placeholder="Discription">
+        </div>
+        <button type="submit" class="btn btn-primary">Add Category</button>
+      </div>
+    </form>
+  </div>
+  </div>
+  </div>

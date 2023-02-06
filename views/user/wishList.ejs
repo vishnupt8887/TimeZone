@@ -1,0 +1,75 @@
+<%- include ('../user/partials/header') %> 
+
+<div class="slider-area ">
+    <div class="single-slider slider-height2 d-flex align-items-center">
+        <div class="container">
+            <div class="row">
+                <div class="col-xl-12">
+                    <div class="hero-cap text-center">
+                        <h2>WISH LIST</h2>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<!--================Cart Area =================-->
+<section class="cart_area section_padding">
+  <div class="container">
+    <div class="cart_inner">
+      <div class="table-responsive">
+        <table class="table">
+          <thead>
+            <tr >
+              <th scope="col" style="padding-left: 45px;">Product</th>
+              <th scope="col" style="padding-left: 35px;">Name</th>
+              <th scope="col" style="padding-left: 10px;">Price</th>
+              <th scope="col" style="padding-left: 95px;">Shopping</th>
+              <th scope="col" style="padding-left: 75px;">Cart</th>
+            </tr>
+          </thead>
+          <tbody>
+            <% if(wishitems==null || wishitems.products.length===0) { %> 
+                <h5>Wish List is Empty</h5>
+                <% }else{ %> 
+                    <% wishitems.products.forEach((element)=>{ %> 
+                <tr>
+                <td>
+                    <div class="media">
+                        <div class="d-flex">
+                            <img class="img-fluid" src="<%= element.product.image[2] %> " alt="" style="height: 100px;width: 100px;">
+                        </div>
+                    </div>
+                    </td>
+                    <td>
+                        <div class="media-body">
+                            <p><%= element.product.name %>  </p>
+                        </div>
+                    
+                </td>
+                <td>
+                    <h5> <%= element.product.price %> </h5>
+                    
+                </td>
+                
+                <td>
+                    <a class="gray_btn" href="/shop">Continue Shopping</a>
+                </td>
+                <td>
+                                                      
+                    <a class="gray_btn" href="/add-to-cart?proid=<%= element.product._id %>">Add to Cart</a>
+                </td>
+            </tr> 
+                <% }) %> 
+            <% } %> 
+        </tbody>
+    </table>
+        </table>
+      </div>
+    </div>
+</section>
+<%- include('../user/partials/footer.ejs') %> 
+
+<script>
+
+</script>

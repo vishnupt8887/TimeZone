@@ -1,0 +1,74 @@
+<%- include('../admin/partials/adminheader') %>
+
+<div class="content">
+<div class="container-fluid  pt-4 px-4" >
+    <!-- <div class="row g-4">
+        <div class="  col-xl-2">
+
+        </div> -->
+      
+        <div class="col-sm-12   col-xl-6 pl-2 pe-2">
+          <div class="card">
+            <div class="card-body">
+            <form action="/admin/addProductPost" method="post" enctype="multipart/form-data">
+                <!-- Name input -->
+                <div class="form-outline mb-4">
+                  
+                  <label class="form-label" for="form4Example1">Name</label>
+                  <input type="text" name="name" id="form4Example1" class="form-control" />
+                </div>
+               
+                <div class="form-outline mb-4">
+                  <label class="form-label" for="form4Example1">Brand</label>
+                    <input type="text" name="brand" id="form4Example1" class="form-control" />
+                </div>
+
+                <div class="form-outline mb-4">
+                  <label class="form-label" for="form4Example1">Price</label>
+                    <input type="number" name="price" id="form4Example1" class="form-control" />
+                </div>
+
+                <div class="form-outline mb-4">
+                  <label class="form-label" for="form4Example1">Stock</label>
+                    <input type="number" name="stock" id="form4Example1" class="form-control" />
+                </div>
+
+                <label class="form-label" for="form4Example1">Category</label>
+                <div class="form-outline mb-5">
+                  <select style="border-radius: 10px;border-color: blue;background-color: aqua;" name="category" id="category">
+                  <% categories.forEach(element => {%>
+                      <option value="<%= element._id %>"><%= element.categoryName %> </option>
+                  <%})%>
+                 </select>
+              </div>
+               
+               
+                <div class="form-outline mb-4">
+                  <label class="form-label" for="form4Example1">Image</label>
+                  <input type="file" name="image" id="image" class="form-control" accept="image/jpeg,image/gif,image/png,image/x-eps" multiple />
+                  
+                </div>
+
+                <div class="form-outline mb-4">
+                  <label class="form-label" for="form4Example1">Discription</label>
+                    <input type="text" name="discription" id="form4Example1" class="form-control" />
+                </div>
+
+                <div class="form-outline mb-4">
+                  <label class="form-label" for="form4Example1">Discount</label>
+                    <input type="text" name="discount" id="form4Example1" class="form-control" />
+                </div>
+
+                <!-- <div class="form-outline mb-4">
+                    <input type="text" name="size" id="form4Example1" class="form-control" />
+                  <label class="form-label" for="form4Example1">Size</label>
+                </div> -->
+              
+                <!-- Submit button -->
+                <button type="submit" class="btn btn-primary btn-block mb-4">Add Product</button>
+              </form>
+            </div>
+            </div>
+            </div>
+            </div>
+        <!-- </div> -->

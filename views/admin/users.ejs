@@ -1,0 +1,83 @@
+<%- include('../admin/partials/adminheader') %>
+
+<div class="content">
+  <div class="row ">
+    <!-- <div class="col-xl-2">
+
+    </div> -->
+    <div class="col-xl-10 ms-4 mt-4 ">
+     
+        <div class="card">
+          <div class="card-body">
+      <h3 class="d-flex justify-content-center text-white-50 bg-secondary pt-2">USERS LIST</h3>
+      <table class="table table-striped table-hover">
+        <thead>
+          <tr>
+            <th scope="col">#</th>
+            <th scope="col">Name</th>
+            <th scope="col">Email</th>
+            <th scope="col">Mobile Number</th>
+            <th scope="col">Edit</th>
+          </tr>
+        </thead>
+        <tbody>
+          <% for(let i=0;i<userlt.length;i++) {%>
+            <tr>
+              <th scope="row">
+                <%= i+1 %>
+              </th>
+              <td>
+                <%= userlt[i].name %>
+              </td>
+              <td>
+                <%= userlt[i].email %>
+              </td>
+              <td>
+                <%= userlt[i].mobileNumber %>
+              </td>
+              <td><% if(userlt[i].access) {%>
+                <form action="/admin/block/<%= userlt[i]._id %>" method="get" id="<%= userlt[i]._id %>">
+                  <button onclick="askConfirm('<%= userlt[i]._id %>')" class="btn btn-danger" type="button">BLOCK</button>
+                </form>
+              <% } else{%>
+                <form action="/admin/unBlock/<%= userlt[i]._id %>" method="get" id="<%= userlt[i]._id %>">
+                <button type="button" onclick="askConfirm('<%= userlt[i]._id %>')" class="btn btn-primary">UNBLOCK</button>
+                <%}%> 
+              </form>
+              </td>
+            </tr>
+            <% } %>
+              <!-- <tr>
+        <th scope="row">2</th>
+        <td>Jacob</td>
+        <td>Thornton</td>
+        <td>@fat</td>
+      </tr>
+      <tr>
+        <th scope="row">3</th>
+        <td colspan="2">Larry the Bird</td>
+        <td>@twitter</td>
+      </tr> -->
+        </tbody>
+      </table>
+    </div>
+  </div>
+  </div>
+  </div>
+  </div>
+
+<script src="//cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+<script>
+  function askConfirm(id){
+    Swal.fire({
+      title: 'Do you want to save the changes?',
+      showCancelButton: true,
+      confirmButtonText: 'Update',
+    }).then((result) => {
+      /* Read more about isConfirmed, isDenied below */
+      if (result.isConfirmed) {
+        document.getElementById(id).submit()
+      }
+    })
+  }
+</script>

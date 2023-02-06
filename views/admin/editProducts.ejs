@@ -1,0 +1,71 @@
+<%- include('../admin/partials/adminheader') %> 
+
+<div class="content">
+  <div class="container-fluid d-flex justify-content-center pt-4 px-4" >
+      <!-- <div class="row g-4">
+          <div class="  col-xl-2">
+  
+          </div> -->
+        
+          <div class="col-sm-12   col-xl-6 pl-2 pe-2">
+          
+            <form action="/admin/editProPost/<%= Id %>" method="post" enctype="multipart/form-data">
+                <!-- Name input -->
+                <div class="form-outline mb-4">
+                  
+                  <label class="form-label" for="form4Example1">Name</label>
+                  <input type="text" value="<%= pro.name %>" name="name" id="form4Example1" class="form-control" />
+                </div>
+               
+                <div class="form-outline mb-4">
+                  <label class="form-label" for="form4Example1">Brand</label>
+                    <input type="text" value="<%= pro.brand %>" name="brand" id="form4Example1" class="form-control" />
+                </div>
+
+                <div class="form-outline mb-4">
+                  <label class="form-label" for="form4Example1">Price</label>
+                    <input type="number" value="<%= pro.price %>" name="price" id="form4Example1" class="form-control" />
+                </div>
+
+                <div class="form-outline mb-4">
+                  <label class="form-label" for="form4Example1">Stock</label>
+                    <input type="number" value="<%= pro.stock %>" name="stock" id="form4Example1" class="form-control" />
+                </div>
+
+                <label class="form-label" for="form4Example1">Category</label>
+                <div class="form-outline mb-5">
+                  <select style="border-radius: 10px;border-color: blue;background-color: aqua;" name="category" id="category">
+                    <% cat.forEach(element => {%>
+                      <option value="<%= element._id %>"><%= element.categoryName %> </option>
+                      <%})%>
+                    </select>
+              </div>
+               
+               
+                <div class="form-outline mb-4">
+                  <label class="form-label" for="form4Example1">Image</label>
+                  <input type="file" value="<%= pro.image %>" name="image" id="image" class="form-control" accept="image/jpeg,image/gif,image/png,image/x-eps" multiple />
+                  
+                </div>
+
+                <div class="form-outline mb-4">
+                  <label class="form-label" for="form4Example1">Discription</label>
+                    <input type="text" value="<%= pro.discription %>" name="discription" id="form4Example1" class="form-control" />
+                </div>
+
+                <div class="form-outline mb-4">
+                  <label class="form-label" for="form4Example1">Discount</label>
+                    <input type="text" value="<%= pro.discount %>" name="discount" id="form4Example1" class="form-control" />
+                </div>
+
+                <!-- <div class="form-outline mb-4">
+                    <input type="text" name="size" id="form4Example1" class="form-control" />
+                  <label class="form-label" for="form4Example1">Size</label>
+                </div> -->
+              
+                <!-- Submit button -->
+                <button type="submit" class="btn btn-primary btn-block mb-4">EDIT PRODUCT</button>
+              </form>
+            </div>
+            <!-- </div> -->
+        </div>

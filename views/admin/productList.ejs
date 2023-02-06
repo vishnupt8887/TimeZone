@@ -1,0 +1,83 @@
+<%- include('../admin/partials/adminheader') %> 
+
+<div class="content">
+<div class="row ">
+<!-- <div class="col-xl-2">
+
+</div> -->
+<div class="col-xl-12">
+  <div class="d-flex justify-content-between bg-secondary">
+  <h3 class="d-flex justify-content-center text-white-50  pt-2">PRODUCT LIST</h3>
+    <a class="d-flex justify-content-end" href="/admin/addProduct"><button type="submit" class="btn btn-primary">ADD PRODUCT</button></a>
+  </div>
+    <table class="table table-striped table-hover">
+    <thead>
+      <tr>
+        <th scope="col">#</th>
+        <th scope="col">Name</th>
+        <th scope="col">Brand</th>
+        <th scope="col">CategoryName</th>
+        <th scope="col">Price</th>
+        <th scope="col">Stock</th>
+        <th scope="col">Image</th>
+        <th scope="col">Discription</th>
+        <th scope="col">Discount</th>
+        <th scope="col">List</th>
+        <th scope="col">Edit</th>
+      </tr>
+    </thead>
+    <tbody>
+      <% for(let i=0;i<productLt.length;i++) {%> 
+      <tr>
+        <th scope="row"><%= i+1 %> 
+        </th>
+        <td><%= productLt[i].name %> </td>
+        <td><%= productLt[i].brand %> </td>
+        <td><%= productLt[i].category.categoryName %> </td>
+        <td><%= productLt[i].price %> </td>
+        <td><%= productLt[i].stock %> </td>
+        <td>
+          <% for(let z=0;z<productLt[i].image.length;z++){ %>
+          
+                  <img src="<%= productLt[i].image[z] %> " alt="" width="100px" height="auto">
+              
+         <% } %>
+      </td>
+        <td><%= productLt[i].discription %></td>
+        <td><%= productLt[i].discount %></td>
+        <td><% if(productLt[i].access) { %> 
+          <form action="/admin/unlistProduct/<%= productLt[i]._id %>" method="get" id="<%= productLt[i]._id %>">
+          <button type="button" onclick="askConfirm('<%= productLt[i]._id %>')" class="btn btn-danger">UNLIST</button>
+          </form>
+          <% }else{ %>
+          <form action="/admin/listProduct/<%= productLt[i]._id %>" method="get" id="<%= productLt[i]._id %>"> 
+          <button type="button" onclick="askConfirm('<%= productLt[i]._id %>')" class="btn btn-secondary">LIST</button>
+          </form>
+          <% } %> 
+         </td>
+         <td>
+          <a href="/admin/editProducts/<%=productLt[i]._id%>"><button type="submit" class="btn btn-primary">EDIT</button></a>
+         </td>
+         </tr>
+         <% } %> 
+    </tbody>
+  </table>
+</div>
+</div>
+</div>
+
+<script src="//cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+<script>
+  function askConfirm(id){
+    Swal.fire({
+      title: 'Do you want to save the changes?',
+      showCancelButton: true,
+      confirmButtonText: 'Update',
+    }).then((result) => {
+      /* Read more about isConfirmed, isDenied below */
+      if (result.isConfirmed) {
+        document.getElementById(id).submit()
+      }
+    })
+  }
+</script>

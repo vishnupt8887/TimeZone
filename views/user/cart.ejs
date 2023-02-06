@@ -1,0 +1,233 @@
+<%- include ('../user/partials/header') %> 
+
+<div class="slider-area ">
+    <div class="single-slider slider-height2 d-flex align-items-center">
+        <div class="container">
+            <div class="row">
+                <div class="col-xl-12">
+                    <div class="hero-cap text-center">
+                        <h2>Cart List</h2>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<!--================Cart Area =================-->
+<section class="cart_area pt-5">
+  <div class="container">
+    <div class="cart_inner">
+      <div class="table-responsive">
+        <table class="table">
+          <thead>
+            <tr>
+              <th scope="col">Product</th>
+              <th scope="col">Price</th>
+              <th scope="col">Quantity</th>
+              <th scope="col">Delete</th>
+            </tr>
+          </thead>
+          <tbody>
+            <% if(cartz.cart.items.length===0 ){%>
+                <h5>Cart is Empty</h5>
+           <% }else {%>
+           
+            <tr>
+                <% for(let i=0;i<cartz.cart.items.length;i++){ %>
+               <% let cartItems = cartz.cart.items[i] %> 
+              
+                <td>
+                    <div class="media">
+                        <div class="d-flex">
+                            <img class="img-fluid" src="<%= cartItems.product_id.image[2] %> " alt="" style="height: 100px;width: 100px;">
+                        </div>
+                        <div class="media-body">
+                            <p><%= cartItems.product_id.name %></p>
+                        </div>
+                    </div>
+                </td>
+                <td>
+                    <h5><%= cartItems.product_id.price %> </h5>
+                    
+                </td>
+                <td>
+                 
+                    <div class="product_count" >
+
+                        
+                        <span <% if(cartz.cart.items[i].qty == 1) { %> style="visibility:hidden"<% }  %>   id="min<%= cartz.cart.items[i].product_id._id %>" 
+                            
+                            class="" onclick="addCart('<%= cartz.cart.items[i].product_id._id %>','-1')"> <i class="ti-minus"></i></span>
+                        <input  class="" name="qty" id="<%= cartz.cart.items[i].product_id._id %>" type="" value="<%= cartItems.qty %>" title="Quantity:" min="0" max="10">
+                        <span class=""  onclick="addCart('<%= cartz.cart.items[i].product_id._id %>','1')"> <i class="ti-plus"></i></span>
+                           
+
+                    </div>
+                </td>
+                <td>
+                    <button class="btn btn-dark" onclick="addCart('<%= cartz.cart.items[i].product_id._id %>','-2') ">REMOVE</button>
+                    <!-- <h5>$720.00</h5> -->
+                </td>
+            </tr>
+            <% } %> 
+            <tr class="bottom_button">
+                <td>
+                  
+                </td>
+                <td>
+                </td>
+                <td>
+                </td>
+                <td>
+                    <div class="cupon_text d-flex align-items-center">
+                        <input type="text" placeholder="Coupon Code">
+                        <a class="primary-btn" href="#">Apply</a>
+                      
+                    </div>
+                </td>
+            </tr>
+            <tr>
+                <td>
+                </td>
+                <td>
+                </td>
+                <td>
+                    <h5>Subtotal</h5>
+                </td>
+                <td>
+                  <!-- // -->
+                    <h5 id="total"><%= cartz.cart.totalPrice %> </h5>
+                </td>
+            </tr>
+           
+            <tr class="shipping_area">
+                <td>
+                </td>
+                <td>
+                </td>
+                <td>
+                    <h5>Shipping</h5>
+                </td>
+                <td>
+                    <div class="shipping_box">
+                        <ul class="list">
+                            <li><a href="#">Flat Rate: $5.00</a></li>
+                            <li><a href="#">Free Shipping</a></li>
+                            <li><a href="#">Flat Rate: $10.00</a></li>
+                            <li class="active"><a href="#">Local Delivery: $2.00</a></li>
+                        </ul>
+                        <!-- <h6>Calculate Shipping <i class="fa fa-caret-down" aria-hidden="true"></i></h6>
+                        <select class="shipping_select">
+                            <option value="1">Bangladesh</option>
+                            <option value="2">India</option>
+                            <option value="4">Pakistan</option>
+                        </select> -->
+                        <!-- <select class="shipping_select">
+                            <option value="1">Select a State</option>
+                            <option value="2">Select a State</option>
+                            <option value="4">Select a State</option>
+                        </select> -->
+                        <!-- <input type="text" placeholder="Postcode/Zipcode">
+                        <a class="gray_btn" href="#">Update Details</a> -->
+                    </div>
+                </td>
+            </tr>
+            <tr class="out_button_area">
+                <td>
+                </td>
+                <td>
+                </td>
+                <td>
+                </td>
+                <td>
+                    <div class="checkout_btn_inner float-right ">
+                       
+                      <!-- <a class="btn_1" href="/shop">Continue Shopping</a> -->
+                      <a style="padding: 0px 15px;" class="gray_btn" href="/shop">Continue Shopping</a>
+                    </div>
+                    <div class="checkout_btn_inner ">
+                        <a class="gray_btn " href="/checkout?userId=<%=useer._id %> ">Proceed to checkout</a>
+                    </div>
+                    
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <% } %> 
+        </table>
+      </div>
+    </div>
+</section>
+
+<%- include('../user/partials/footer.ejs') %> 
+ 
+<script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
+<script>
+    function addCart(proId,cnt){
+    const quantity = document.getElementById(proId).value
+    const count = parseInt(cnt)
+    $.ajax({
+      url:'/qtyChange',
+      method:'POST',
+      data:{
+        productId:proId,
+        count:count,
+        qty:quantity
+      },
+      success:(res)=>{
+        console.log(res);
+        // if(res.access){
+          if(res.remove){
+            Swal.fire('Deleted Product from Cart')
+            setTimeout(()=>location.reload(),2000)
+          }else{
+              document.getElementById(proId).value=res.status
+              console.log('cval'+document.getElementById(proId).value);
+            document.getElementById('total').innerHTML=res.total
+        }
+        if (document.getElementById(proId).value <= 1) {
+         document.getElementById('min'+proId).style.visibility = 'hidden'   
+        }else{
+            document.getElementById('min'+proId).style.visibility = 'visible'
+        }
+        // }else{
+        //   Swal.fire('Please Login')
+        // }
+      }
+    })
+  }
+
+  function remove(proId,uId){
+      console.log(proId,uId,'swaaaaaaalll');
+      Swal.fire({
+  title: 'Are you sure?',
+  text: "You won't be able to revert this!",
+  icon: 'warning',
+  showCancelButton: true,
+  confirmButtonColor: '#3085d6',
+  cancelButtonColor: '#d33',
+  confirmButtonText: 'Yes, delete it!'
+}).then((result) => {
+  if (result.isConfirmed) {
+    $.ajax({
+      url:`/removeCart?prodId=${proId}&userId=${uId}`,
+      method:'delete',
+      success:((response)=>{
+        if (response.status) {
+           Swal.fire(
+      'Deleted!',
+      'Your file has been deleted.',
+      'success'
+    )
+    setTimeout(()=>location.reload(),2000)
+        }
+      })
+
+    })
+   
+  }
+})
+    }
+
+  
+</script>
