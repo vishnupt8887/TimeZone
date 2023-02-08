@@ -37,6 +37,9 @@ app.use('/admin',adminRouter)
 
 app.use(function(req, res, next) {
     const error = new Error(`Not found ${req.originalUrl}`)
+    if(req.originalUrl.startsWith('/admin')){
+      error.admin=true
+    }
     error.status = 404
     next(error)
       });
@@ -55,19 +58,16 @@ app.use(function(req, res, next) {
           }
   
         }else{
-            // if(err.status==500){
+            if(err.status==500){
                 res.render('error_500',{error:'unfinded error'})
-          //   }else{
-          // if(err.admin){
-          //   res.render('errorAdmin_404',{error:'server down'})
-          // }else{
-          //   res.render('error_404',{error:'server down'})
-          // }
-         
-        
-       }
-     
-      });
-
-
+            }else{
+          if(err.admin){
+            console.log('yutytytyt');
+            res.render('errorAdmin_404',{error:'server down'})
+          }else{
+            res.render('error_404',{error:'server down'})
+          }
+            }
+          }
+      })
 app.listen(3000)

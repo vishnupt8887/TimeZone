@@ -99,9 +99,44 @@
             </form>
 
           </div>
+          
           <div class="col-lg-4">
             <div class="order_box">
-              <h2>Your Order</h2>
+              <div id="accordion" style="width:auto">
+                <div class="card">
+                  <div class="card-header" id="headingOne">
+                    <h5 class="mb-0">
+                      <button class="btn btn-link btn btn-secondary mb-2 " style="text-decoration: none;" data-toggle="collapse" data-target="#collapseOne" aria-expanded="true" aria-controls="collapseOne">
+                        Coupons
+                      </button>
+                      
+                    </h5>
+                  </div>
+              
+                  <div id="collapseOne" class="collapse show" aria-labelledby="headingOne" data-parent="#accordion">
+                    <div class="card-body">
+                      <% coupons.forEach((x)=>{%>
+                        <p><%= x.code %></p>
+                    <% }) %> 
+                    </div>
+                  </div>
+                </div>
+            </div>
+            <div class="cupon_text d-flex align-items-center">
+                                       
+              <form id="couponForm">
+                  
+                   <input class="" style="background-color:   rgb(232, 236, 236);    margin-left: 0px;" type="text"
+                   placeholder="Enter coupon code" id="code" name="code">
+                   <input type="text" name="userId" value="<%= useId %>" hidden>
+                   <button type="submit" class="primary-btn">Apply</button>
+                   <div id="success" class="alert alert-primary mt-2 ml-2" role="alert" style="display: none;">
+                       valid coupon!
+                     </div>
+                     <div id="error"  class="alert alert-danger " role="alert" style="display: none;">
+                       This is a Invalid coupon!
+                     </div>
+              <h2 class="pt-3">Your Order</h2>
               <ul class="list">
                 <li><a href="#">Product <span>Total</span></a></li>
 
@@ -110,9 +145,9 @@
 
               </ul>
               <ul class="list list_2">
-                <li><a href="#">Subtotal <span>₹<%= usr.cart.totalPrice %></span></a></li>
+                <li><a href="#">Subtotal <span id="total"><%= usr.cart.totalPrice %></span></a></li>
                 <li><a href="#">Shipping <span>Flat rate: ₹0.00</span></a></li>
-                <li><a href="#">Total <span>₹<%= usr.cart.totalPrice %> </span></a></li>
+                <li><a href="#">Total <span id="total">₹<%= usr.cart.totalPrice %> </span></a></li>
               </ul>
               <div class="creat_account">
                 <input type="checkbox" id="f-option4" name="selector">
@@ -237,16 +272,59 @@
 
     $("#checkout-form").submit((e) => {
       console.log('vannuuuuuuuuuuu');
+      const total = document.getElementById('total').innerHTML
+      const code = document.getElementById('code').value
       console.log($('#checkout-form').serialize(),"koihg");
       e.preventDefault()
       $.ajax({
         url: '/order',
         method: 'post',
-        data: $('#checkout-form').serialize(),
+        data: $('#checkout-form').serialize()+`&code=${code}&total=${total}`,
         success: (response) => {
           location.href='/successPage'
         }
       })
     })
+    let clicked = false
+    $('#couponForm').submit((e)=>{
+        e.preventDefault()
+     const code = document.getElementById('code').value
+     const total = document.getElementById('total').innerHTML
+     if(code == ""){
+      document.getElementById('error').style.display='inline'
+      setTimeout(()=> document.getElementById('error').style.display='none',2000)
+     }else{
+         $.ajax({
+            url:'/couponCheck',
+            method:'post',
+            dataType: "json",
+            encode: true,
+            data:
+        
+                $('#couponForm').serialize()+ `&total=${total}`
+            ,
+            success:((response)=>{
+                if(response.status && clicked==false){
+                  console.log(response,'ivde');
+                    document.getElementById('success').style.display='inline'
+                    document.getElementById('total').innerHTML=response.total
+                    document.getElementById('old').style.display='inline'
+                    document.getElementById('oldT').innerHTML=total
+                    setTimeout(()=> document.getElementById('success').style.display='none',2000)
+                    clicked=true
+                }else{
+                    document.getElementById('error').innerHTML="Already Entered or Minimum Cart Amount is Less."
+                    document.getElementById('error').style.display='inline'
+                    setTimeout(()=> document.getElementById('error').style.display='none',2000)
+                }
+            })
+  })
+     }
+    })
+// function checkOut(id){
+//     const code = document.getElementById('code').value
+//      const total = document.getElementById('total').innerHTML
+//      location.href=`/checkout?user=${id}&code=${code}&total=${total}`
+// }
   </script>
   <%- include('../user/partials/footer.ejs') %>

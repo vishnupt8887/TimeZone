@@ -24,7 +24,9 @@ const {
     removeCart,
     orderList,
     orderProducts,
-    changeStatus
+    changeStatus,
+    couponCheck,
+    productDet
 } = require('../controllers/userController')
 
 const router = express.Router()
@@ -38,22 +40,23 @@ router.post('/loginSubmit',postLogin)
 router.post('/otp',postOtp)
 router.get('/logout',verifyUser,logout)
 router.get('/profile',verifyUser,profile)
-router.post('/address',address)
-router.post('/editAddress/:id',editAddress)
-router.delete('/deleteAddress',deleteAddress)
-router.post('/editName',editName)
+router.post('/address',verifyUser,address)
+router.post('/editAddress/:id',verifyUser,editAddress)
+router.delete('/deleteAddress',verifyUser,deleteAddress)
+router.post('/editName',verifyUser,editName)
 router.get('/shop',shop)
 router.get('/cart',verifyUser,cart)
 router.get('/add-to-cart',verifyUser, addCart)
 router.post('/qtyChange',qtyChange)
-router.delete('removeCart',removeCart)
+router.delete('removeCart',verifyUser,removeCart)
 router.get('/wishList',verifyUser,wishList)
-router.post('/addWishlist',addWishlist)
-router.get('/checkOut',checkOut)
-router.post('/order',order)
-router.get('/orderList',orderList)
-router.get('/successPage',successPage)
-router.post('/orderProducts',orderProducts)
+router.post('/addWishlist',verifyUser,addWishlist)
+router.get('/checkOut',verifyUser,checkOut)
+router.post('/order',verifyUser,order)
+router.get('/orderList',verifyUser,orderList)
+router.get('/successPage',verifyUser,successPage)
+router.post('/orderProducts',verifyUser,orderProducts)
 router.get('/changeStatus', changeStatus)
-
+router.post('/couponCheck',couponCheck)
+router.get('/productDet',productDet)
 module.exports = router

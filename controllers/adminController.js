@@ -41,10 +41,10 @@ module.exports = {
         console.log(req.body)
         const admin = req.body.email
         const Password = req.body.password
-        console.log(admin)
-        console.log(adminEmail)
-        console.log(Password)
-        console.log(adminPassword)
+        // console.log(admin)
+        // console.log(adminEmail)
+        // console.log(Password)
+        // console.log(adminPassword)
 
         if(admin == adminEmail && Password == adminPassword){
             // console.log('hiii');
@@ -63,7 +63,7 @@ module.exports = {
     userList :async(req,res,next)=>{
         try {
         const userlt = await user.find().sort({_id:-1})
-        console.log(userlt)
+        // console.log(userlt)
         res.render('admin/users',{userlt})
     } catch (error) {
             console.log(error)
@@ -84,7 +84,7 @@ module.exports = {
     block : async(req,res,next)=>{
         try{
            const Id = req.params.Id
-           console.log(Id);
+        //    console.log(Id);
            await user.findOneAndUpdate({_id:Id},{$set:{access:false}})
            res.redirect('/admin/users')
         }catch(error){
@@ -117,7 +117,7 @@ module.exports = {
     category : async(req,res,next)=>{
         try {
             const categoryLt = await category.find()
-            console.log(categoryLt)
+            // console.log(categoryLt)
             let err ;
             if(req.session.flashMssg){
                 err = req.session.flashMssg;
@@ -134,12 +134,12 @@ module.exports = {
         try {
                 const image = req.files   
                 let imageUrl = image[0].path
-                console.log(imageUrl)
+                // console.log(imageUrl)
                 imageUrl = imageUrl.substring(6)
           
-                console.log(imageUrl)
-                console.log(req.body.categoryName)
-                console.log(req.body.discription)
+                // console.log(imageUrl)
+                // console.log(req.body.categoryName)
+                // console.log(req.body.discription)
                 const newCategory = new category({
                     categoryName: req.body.categoryName,
                   image: imageUrl,
@@ -147,11 +147,11 @@ module.exports = {
                 })
                  newCategory.save((err,doc)=>{
                     if(err){
-                        console.log(err)
+                        // console.log(err)
                         req.session.flashMssg = 'Category already exists'
                         res.redirect('/admin/category')
                     }else{
-                        console.log(newOne)
+                        // console.log(newOne)
                         res.redirect('/admin/category')
                     }
                  })
@@ -175,7 +175,7 @@ module.exports = {
     },
     categoryEnable : async(req,res,next)=>{
         try {
-            console.log('category----------------------------------------')
+            // console.log('category----------------------------------------')
             const Id = req.params.Id
             await category.findOneAndUpdate({_id:Id},{$set:{access:true}})
             res.redirect('/admin/category')
@@ -229,11 +229,11 @@ module.exports = {
             })
             product.save((error,doc)=>{
                 if(error){
-                    console.log(error+'vichu');
+                    // console.log(error+'vichu');
                     res.redirect('/admin/addProduct')
                 }else{
 
-                    console.log(doc+'herer');
+                    // console.log(doc+'herer');
                     res.redirect('/admin/productList')
                 }
             })
@@ -270,8 +270,8 @@ module.exports = {
             const Id = req.params.Id
             const cat = await category.find()
             const pro = await products.findOne({_id:Id}).populate('category')
-            console.log(pro)
-            console.log(Id);
+            // console.log(pro)
+            // console.log(Id)
             res.render('admin/editProducts',{cat,pro,Id})
         } catch (error) {
             console.log(error)
@@ -281,7 +281,7 @@ module.exports = {
     },
     editProPost : async (req,res,next)=>{
         try {
-            console.log(req.body)
+            // console.log(req.body)
             const Id = req.params.Id
             const image = req.files
             console.log(image)
@@ -303,7 +303,7 @@ module.exports = {
                 discount: req.body.discount
             }})
             if (product) {
-                console.log(product,'product')
+                // console.log(product,'product')
                 res.redirect('/admin/productList')
             } else {
                 throw new Error('product editing failed',404)
@@ -319,17 +319,17 @@ module.exports = {
         try {
             const ret = []
             const addList = await Address.find()
-            console.log(addList,'Lttttttttt')
+            // console.log(addList,'Lttttttttt')
             const ord = await Order.find().populate('user_Id').sort({_id:-1})
-            console.log(ord,'oddddddd')
+            // console.log(ord,'oddddddd')
             ord.forEach((el,i)=>{
                 addList.forEach((x)=>{
                     const index = x.address.findIndex(obj => obj._id == el.address.trim())
-                    console.log(index,'inddddd')
+                    // console.log(index,'inddddd')
                     if (index >= 0) {
                         ret.push(x.address[index])
                     }
-                    console.log(ret,'reeeeee')
+                    // console.log(ret,'reeeeee')
                  
                 })
                 return ret
@@ -345,12 +345,12 @@ module.exports = {
     changeStatus : async(req,res,next)=>{
        try {
          const status = req.query.s
-         console.log(status,'statusssssss')
+        //  console.log(status,'statusssssss')
          const orderId = req.query.id
-         console.log(orderId)
+        //  console.log(orderId)
 
          const upOrder = await Order.findOneAndUpdate({_id:orderId},{$set:{orderStatus:status}},{new:true})
-         console.log(upOrder)
+        //  console.log(upOrder)
          if(upOrder.orderStatus==='cancelled'){
             const prod = upOrder.cart.items.map((el)=>{
                 const pro = { productId:el.product_id,qty:el.qty}
@@ -515,7 +515,7 @@ module.exports = {
               count : {$sum:1}
             }
          },{ $sort : {createdAt : -1}}]) 
-         console.log(sales) 
+        //  console.log(sales) 
          res.render('admin/sales',{sales}) 
         } catch (error) {
             console.log(error)
@@ -551,7 +551,7 @@ module.exports = {
                     count:{$sum:1}
                 }
             },{$sort:{createdAt:-1}}])
-            console.log(sales)
+            // console.log(sales)
             const salRe = sales.map((el)=>{
                 const n = {...el}
                 n._id.month = months[n._id.month - 1]
@@ -577,7 +577,7 @@ module.exports = {
         },{$sort:{createdAt:-1}}])
         res.render('admin/yearlySales',{sales})
       },
-      chart1 : async(req,res)=>{
+      chart1 : async(req,res,next)=>{
         try {
             const sales = await Order.aggregate([{
                 $match: {orderStatus:{$eq:'delivered'}}
@@ -591,7 +591,7 @@ module.exports = {
                   count : {$sum:1}
                 }
              },{ $sort : {createdAt : -1}}]) 
-             console.log(sales)
+            //  console.log(sales)
              res.json({sales})
         } catch (error) {
             console.log(error)

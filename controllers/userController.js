@@ -9,12 +9,16 @@ const Address = require('../models/addressschema')
 const session = require('express-session')
 const userHelpers = require('../helpers/userhelper')
 const Order = require('../models/orderschema')
+const Coupons = require('../models/couponschema')
+const { use } = require('../router/user')
+const Banner = require('../models/bannerschema')
 
 
 module.exports = {
-    home: (req, res, next) => {
+    home: async(req, res, next) => {
         try {
-            res.render('user/index', { login: req.session.user })
+            const ban = await Banner.find()
+            res.render('user/index', { login: req.session.user ,ban})
         } catch (error) {
             console.log(error)
             next(error)
@@ -45,14 +49,14 @@ module.exports = {
     },
     postSignup: async (req, res, next) => {
         try {
-            console.log(req.body)
+            // console.log(req.body)
             const mobileNum = req.body.mobileNumber
 
             req.session.signup = req.body
-            console.log(req.body)
+            // console.log(req.body)
 
             const userr = await user.findOne({ email: req.body.email })
-            console.log(userr, 'ivde');
+            // console.log(userr, 'ivde');
             if (userr) {
                 res.redirect('/login')
             } else {
@@ -132,7 +136,7 @@ module.exports = {
             next(error)
         }
     },
-    profile: async (req, res,next) => {
+    profile: async (req, res, next) => {
         try {
             const userr = req.session.user
             const userId = req.session.user._id
@@ -148,13 +152,13 @@ module.exports = {
             next(error)
         }
     },
-    address: async (req, res,next) => {
-        console.log('jijijiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiii');
+    address: async (req, res, next) => {
+        // console.log('jijijiiiiiiiiiiiiiiiiii');
         try {
             const userrId = req.session.user._id
-            console.log(userrId + 'idddddd')
+            // console.log(userrId + 'idddddd')
             const add = await Address.findOne({ userId: userrId })
-            console.log(add + 'addddddd')
+            // console.log(add + 'addddddd')
             if (add) {
                 if (add.address.length >= 3) {
                     res.json({ status: false })
@@ -171,23 +175,23 @@ module.exports = {
                 addr.save((err, doc) => {
                     if (err) console.log()
                     else {
-                        console.log(doc)
+                        // console.log(doc)
                         res.json({ status: true })
                     }
                 })
-                console.log(addr + 'addrrrrrr');
+                // console.log(addr + 'addrrrrrr');
             }
         } catch (error) {
             console.log(error)
             next(error)
         }
     },
-    editAddress: async (req, res,next) => {
+    editAddress: async (req, res, next) => {
         try {
             const addId = req.params.id
-            console.log(addId + 'addIdddddd')
+            // console.log(addId + 'addIdddddd')
             const userid = req.body.userId
-            console.log(userid + 'useriddddddd')
+            // console.log(userid + 'useriddddddd')
             const newAdd = {
                 name: req.body.name,
                 mob: req.body.mob,
@@ -198,9 +202,9 @@ module.exports = {
                 state: req.body.state,
                 pincode: req.body.pincode
             }
-            console.log(newAdd + 'newAddddd')
+            // console.log(newAdd + 'newAddddd')
             const newDoc = await Address.findOne({ userId: userid })
-            console.log(newDoc + 'newDoccccccc')
+            // console.log(newDoc + 'newDoccccccc')
             const ad = await newDoc.editAddr(newAdd, addId)
 
             res.redirect('/profile')
@@ -210,14 +214,14 @@ module.exports = {
             next(error)
         }
     },
-    deleteAddress: async (req, res,next) => {
+    deleteAddress: async (req, res, next) => {
         try {
             const addId = req.query.addId
-            console.log(addId + 'dddiiiiddd');
+            // console.log(addId + 'dddiiiiddd');
             const usId = req.query.userId
             const dAdd = await Address.findOne({ userId: usId })
             const del = await dAdd.delete(addId)
-            console.log(del)
+            // console.log(del)
             if (del) {
                 res.status(200).json({ status: true })
             }
@@ -226,12 +230,12 @@ module.exports = {
             next(error)
         }
     },
-    editName: async (req, res,next) => {
+    editName: async (req, res, next) => {
         try {
-            console.log('Ethy');
-            console.log(req.body, 'hiiiiiiiiiiiii')
+            // console.log('Ethy');
+            // console.log(req.body, 'hiiiiiiiiiiiii')
             const usId = req.body.userId
-            console.log(usId)
+            // console.log(usId)
 
             const newName = await user.updateOne({ _id: usId }, { $set: { name: req.body.name } })
             res.status(200).json({ status: true })
@@ -240,7 +244,7 @@ module.exports = {
             next(error)
         }
     },
-    logout: (req, res,next) => {
+    logout: (req, res, next) => {
         try {
             req.session.logedIn = false
             req.session.user = null
@@ -250,7 +254,7 @@ module.exports = {
             next(error)
         }
     },
-    shop: async (req, res,next) => {
+    shop: async (req, res, next) => {
         try {
             const pro = await Product.find({ access: true })
             res.render('user/shop', { pro })
@@ -259,13 +263,13 @@ module.exports = {
             next(error)
         }
     },
-    cart: async (req, res,next) => {
+    cart: async (req, res, next) => {
 
         try {
             const id = req.session.user._id
             const useer = await user.findById(id)
             const cartz = await useer.populate('cart.items.product_id')
-            console.log(cartz)
+            // console.log(cartz)
             console.log(cartz.cart.items)
 
             res.render('user/cart', { cartz, useer })
@@ -274,14 +278,14 @@ module.exports = {
             next(error)
         }
     },
-    addCart: async (req, res,next) => {
+    addCart: async (req, res, next) => {
         try {
             const id = req.session.user._id
             const useer = await user.findById(id)
             const proId = req.query.proid
             console.log(proId + 'jiijii')
             Product.findById(proId).then((product) => {
-                console.log(product + 'koi')
+                // console.log(product + 'koi')
                 useer.addCart(product).then(() => {
                     res.redirect('/cart')
                 }).catch((err) => console.log(err))
@@ -291,14 +295,14 @@ module.exports = {
             next(error)
         }
     },
-    removeCart: async (req, res,next) => {
+    removeCart: async (req, res, next) => {
         try {
             const prodId = req.query.prodId
-            console.log(prodId + 'rrrrrriiiiddd');
+            // console.log(prodId + 'rrrrrriiiiddd');
             const usId = req.query.userId
             const dCart = await user.findOne({ _id: usId })
             const del = await dCart.delete(prodId)
-            console.log(del)
+            // console.log(del)
             if (del) {
                 res.status(200).json({ status: true })
             }
@@ -307,9 +311,9 @@ module.exports = {
             next(error)
         }
     },
-    qtyChange: async (req, res,next) => {
+    qtyChange: async (req, res, next) => {
         try {
-            console.log('ethy');
+            // console.log('ethy');
             const id = req.session.user._id
             const useer = await user.findById(id)
             useer.changeqty(req.body.productId, req.body.qty, req.body.count, (response) => {
@@ -322,18 +326,18 @@ module.exports = {
             next(error)
         }
     },
-    wishList: async (req, res,next) => {
+    wishList: async (req, res, next) => {
         try {
             const userid = req.session.user._id
             const wishitems = await wish.findOne({ userId: userid }).populate("products.product")
-            console.log('wishlist:  ', wishitems)
+            // console.log('wishlist:  ', wishitems)
             res.render('user/wishList', { wishitems })
         } catch (error) {
             console.log(error)
             next(error)
         }
     },
-    addWishlist: async (req, res,next) => {
+    addWishlist: async (req, res, next) => {
         try {
             const pro = req.query.pro;
             const userId = req.session.user._id
@@ -376,23 +380,42 @@ module.exports = {
         }
     },
     checkOut: async (req, res, next) => {
-        // console.log('ind.........');
+        console.log('ind.........')
         try {
             const useId = req.query.userId
+            console.log(useId,'uiiiiii')
+            const coupons = await Coupons.find()
             // console.log(useId,'id');
             const usr = await user.findOne({ _id: useId }).populate('cart.items.product_id')
             const addd = await Address.findOne({ useId })
 
-            res.render('user/checkOut', { useId, usr, addd })
+            res.render('user/checkOut', { useId, usr, addd,coupons })
         } catch (error) {
             console.log(error)
             next(error)
         }
     },
+    couponCheck : async(req,res)=>{
+        try {
+            const total = parseInt(req.body.total)
+            const coupon = await Coupons.findOne({code:req.body.code})
+            if (coupon && coupon.minCartAmount <= total) {
+                const amount = coupon.amount
+                const cartTotal = total - amount
+                res.json({status:true, total: cartTotal })
+            } else {
+              console.log('false')
+              res.json({status:false, message: 'No such coupon' })
+            }
+        } catch (error) {
+            console.log(error)
+        }
+    },
     order: async (req, res, next) => {
         try {
             if (req.session.user) {
-                console.log(req.body)
+                
+                console.log(req.body,'hiihihihi')
                 const products = await userHelpers.getCartProductList(req.body.Id)
                 await userHelpers.placeOrder(req.body, products)
                 res.json({ status: true })
@@ -415,16 +438,16 @@ module.exports = {
     orderList: async (req, res, next) => {
         try {
             const userid = req.session.user
-            console.log(userid)
+            // console.log(userid)
             const orders = await Order.find({ user_Id: userid }).sort({ _id: -1 })
-            console.log(orders)
+            // console.log(orders)
             const aadId = orders.map((x) => {
                 return x.address
             })
-            console.log(aadId)
+            // console.log(aadId)
             const aad = await Address.findOne({ userId: userid })
             const addres = await aad.finding(aadId)
-            console.log(addres)
+            // console.log(addres)
             res.render('user/orderList', { orders, addres })
         } catch (error) {
             console.log(error)
@@ -434,9 +457,9 @@ module.exports = {
     orderProducts: async (req, res, next) => {
         try {
             const orderId = req.body.orderId
-            console.log(orderId, 'dddd')
+            // console.log(orderId, 'dddd')
             const orderDetials = await Order.findOne({ _id: orderId }).populate('cart.items.product_id')
-            console.log(orderDetials, 'dddtttt')
+            // console.log(orderDetials, 'dddtttt')
             res.json(orderDetials)
         } catch (error) {
             console.log(error)
@@ -462,6 +485,18 @@ module.exports = {
 
         } catch (error) {
             console.log(error)
+            next(error)
+        }
+    },
+    productDet : async(req,res,next)=>{
+        try {
+            proId = req.query.proid
+            prod = await Product.findOne({_id:proId}).populate('category.categoryName')
+            // console.log(prod,'kitttttyyyy')
+            res.render('user/productDet',{prod})
+        } catch (error) {
+            console.log(error)
+            // throw new Error('ERFASFSDAFASDF')
             next(error)
         }
     }

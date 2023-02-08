@@ -39,7 +39,7 @@ const {
     monthlySalesReport,
     yearlySalesReport,
     chart1,
-    error
+    // error
     // adminProfile
 } = require('../controllers/adminController')
 
@@ -62,22 +62,21 @@ router.get('/listProduct/:Id',verifyAdmin,listProduct)
 router.get('/unlistProduct/:Id',verifyAdmin,unlistProduct)
 router.get('/editProducts/:Id',verifyAdmin,editProducts)
 router.post('/editProPost/:Id',storeimage,editProPost)
-router.get('/order',order)
-router.get('/changeStatus',changeStatus)
-router.post('/orderProducts',orderProducts)
-router.get('/add-banner', bannerAdd)
-router.post('/add-banner',storeimage, PostBannerAdd)
-router.get('/banner', banner)
-router.get('/delete-banner', deleteBanner)
+router.get('/order',verifyAdmin,order)
+router.get('/changeStatus',verifyAdmin,changeStatus)
+router.post('/orderProducts',verifyAdmin,orderProducts)
+router.get('/add-banner',verifyAdmin,bannerAdd)
+router.post('/add-banner',verifyAdmin,storeimage, PostBannerAdd)
+router.get('/banner',verifyAdmin, banner)
+router.get('/delete-banner',verifyAdmin, deleteBanner)
 router.get('/addCoupons', verifyAdmin, addCoupons)
 router.post('/addCoupon', verifyAdmin, postAddCoupons)
-router.get('/coupons', coupons)
-router.get('/couponDelete', deleteCoupon)
-router.get('/salesReport',salesReport)
-router.get('/monthlySalesReport',monthlySalesReport)
-router.get('/yearlySalesReport',yearlySalesReport)
-router.get('/chart1', chart1)
-// router.get('/error',error)
+router.get('/coupons',verifyAdmin, coupons)
+router.get('/couponDelete',verifyAdmin, deleteCoupon)
+router.get('/salesReport',verifyAdmin,salesReport)
+router.get('/monthlySalesReport',verifyAdmin,monthlySalesReport)
+router.get('/yearlySalesReport',verifyAdmin,yearlySalesReport)
+router.get('/chart1',verifyAdmin, chart1)
 // router.get('/profile',adminProfile)
 // router.get('*', function(req,res){
 //     res.redirect('/admin/adminLogin')
