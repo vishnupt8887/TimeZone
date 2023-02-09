@@ -32,13 +32,13 @@
                 </button>
               </div>
 
-              <section class="login_part">
+              <!-- <section class="login_part">
                 <div class="container">
                   <div class="row ">
                     <div class="col-lg-6 col-md-6">
                       <div class="login_part_form p-4">
                         <h3 class="mb-3">Date to Date Report</h3>
-                        <form class="row contact_form" action="salesReport" method="post">
+                        <form class="row contact_form" action="dates" method="post">
                           <div class="col-md-12 ">
                             <label for="from">From</label>
                             <input value="" type="date" name="from" />
@@ -55,8 +55,8 @@
                     </div>
                   </div>
                 </div>
-              </section>
-              <!-- <div class="w-full overflow-hidden rounded-lg shadow-xs mt-4">
+              </section> -->
+              <div class="w-full overflow-hidden rounded-lg shadow-xs mt-4">
                     <div class="w-full overflow-x-auto" id="invoice">
                       <table id="table" class="w-full whitespace-no-wrap" >
                         <thead>
@@ -75,36 +75,29 @@
                         <tbody
                           class="bg-white divide-y dark:divide-gray-700 dark:bg-gray-800"
                         >
-                        
-                      
+                        <% sales.forEach((x)=>{  %>
+                            <tr class="text-gray-700 dark:text-gray-400">
                          
-                         
-                              <tr class="text-gray-700 dark:text-gray-400">
-                           
-                            <td class="px-4 py-3">
-                              <div class="flex items-center text-sm">
-                             
-                                <div>
-                                  <p class="font-semibold"></p>
-                                </div>
+                          <td class="px-4 py-3">
+                            <div class="flex items-center text-sm">
+                              <!-- Avatar with inset shadow -->
+                              <div>
+                                <p class="font-semibold"><%= x._id.day %>/<%= x._id.month %>/<%= x._id.year %></p>
                               </div>
-                            </td>
-                                <td class="px-4 py-3 text-sm"> </td>
-                            <td class="px-4 py-3 text-sm"></td>
-                            <td class="px-4 py-3 text-sm"></td>
-                          
-            
-                            <td class="px-4 py-3 text-sm"></td>
-                          </tr>
-                            
-                        
-                  
-            
+                            </div>
+                          </td>
+                              <td class="px-4 py-3 text-sm"><%= x.count %> </td>
+                          <td class="px-4 py-3 text-sm"><%= x.items %></td>
+                          <td class="px-4 py-3 text-sm"><%= x.totalPrice %></td>
+                                  
+                          <td class="px-4 py-3 text-sm"><%= x.totalPrice * 10/100 %></td>
+                        </tr>
+                          <% }) %> 
                         </tbody>
                       </table>
                     </div>
                     
-                  </div> -->
+                  </div>
 
             </div>
             <!-- 

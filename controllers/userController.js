@@ -414,8 +414,33 @@ module.exports = {
     order: async (req, res, next) => {
         try {
             if (req.session.user) {
-                
+                const userId = req.session.user._id
+                const Couponcode = req.body.code
+                let total = req.body.total
+                total = parseInt(total)
                 console.log(req.body,'hiihihihi')
+                if (Couponcode !== '') {
+                    const coupons = await Coupons.findOne({ code: Couponcode })
+                    if (!coupons) {
+                      return next(new Error('No coupon founded in this Id', 404))
+                    }
+                    const index = await coupons.userUsed.findIndex(obj => obj.userId == userId)
+                    if (index >= 0) {
+                      console.log('user exist')
+                      res.json({ couponUsed:true })
+                     return
+                    } else {
+                      const userz = { userId: '' }
+                      userz.userId = userId
+                      await Coupons.findOneAndUpdate({ code: Couponcode }, { $addToSet: { userUsed: userz } })
+                      const useer = await user.findOne({ _id: userId })
+                      if (!useer) {
+                        return next(new Error('User not found', 404))
+                      }
+                      useer.cart.totalPrice = total
+                      await useer.save()
+                    }
+                  }
                 const products = await userHelpers.getCartProductList(req.body.Id)
                 await userHelpers.placeOrder(req.body, products)
                 res.json({ status: true })

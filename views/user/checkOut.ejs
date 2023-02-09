@@ -20,7 +20,9 @@
     <div class="container">
       <div class="cupon_area">
         <div class="check_title">
-          
+          <div id="alert" class="alert alert-danger" style="display:none" role="alert">
+           You Already used this coupon!
+          </div>
                 <!-- <div class="alert alert-warning alert-dismissible fade show" role="alert">
                   <strong>
                   <button type="button" class="close" data-dismiss="alert" aria-label="Close">
@@ -280,8 +282,13 @@
         url: '/order',
         method: 'post',
         data: $('#checkout-form').serialize()+`&code=${code}&total=${total}`,
-        success: (response) => {
-          location.href='/successPage'
+        success: (res) => {
+          if(res.couponUsed){
+           document.getElementById('alert').style.display="inline"
+          }else if(res.status){
+            location.href='/successPage'
+          }
+         
         }
       })
     })

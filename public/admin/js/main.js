@@ -230,9 +230,26 @@ function maiin ($) {
           'December'
         ]
         const count = []
-        res.sales.forEach(element => {
-          count.push(element.count)
+        res.sales.forEach((element,i) => {
+            for(let z =0 ; z <element._id.month;z++){
+           if(element._id.month > i){
+            count[i]=0
+           }
+    
+           
+           
+        
+        }
+        count.push(element.count)
         })
+
+        
+        // const masam = []
+        // res.sales.forEach(element => {
+        //     masam.push(element.count)
+        //   })
+        console.log( count,"count");
+
         const ctx1 = $('#worldwide-sales').get(0).getContext('2d')
   
         const myChart1 = new Chart(ctx1, {

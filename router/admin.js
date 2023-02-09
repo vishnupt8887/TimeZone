@@ -39,6 +39,7 @@ const {
     monthlySalesReport,
     yearlySalesReport,
     chart1,
+    sales,
     // error
     // adminProfile
 } = require('../controllers/adminController')
@@ -73,7 +74,8 @@ router.get('/addCoupons', verifyAdmin, addCoupons)
 router.post('/addCoupon', verifyAdmin, postAddCoupons)
 router.get('/coupons',verifyAdmin, coupons)
 router.get('/couponDelete',verifyAdmin, deleteCoupon)
-router.get('/salesReport',verifyAdmin,salesReport)
+router.post('/salesReport',verifyAdmin,salesReport)
+router.get('/sales',sales)
 router.get('/monthlySalesReport',verifyAdmin,monthlySalesReport)
 router.get('/yearlySalesReport',verifyAdmin,yearlySalesReport)
 router.get('/chart1',verifyAdmin, chart1)
